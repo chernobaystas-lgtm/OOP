@@ -46,6 +46,48 @@ public:
     inline int Set_number_of_the_group(int number_of_the_group);
     
 
+    // --- Конструктор за замовчуванням ---
+    student() : date_of_birth(0), phone(0), number_of_the_group(0) {
+        strcpy_s(Name_of_study_place, T, "Don't study at any place");
+        strcpy_s(name, T, "No name");
+        strcpy_s(surname, T, "No surname");
+        strcpy_s(lastName, T, "No last name");
+        strcpy_s(native_city, T, "Without native city");
+        strcpy_s(native_country, T, "Without native country");
+    }
+
+    // --- Параметризований конструктор ---
+    student(const char* study_place, const char* n, const char* s, const char* l,
+        int birth, int ph, const char* city, const char* country, int group)
+        : date_of_birth(birth), phone(ph), number_of_the_group(group) {
+        strcpy_s(Name_of_study_place, T, study_place);
+        strcpy_s(name, T, n);
+        strcpy_s(surname, T, s);
+        strcpy_s(lastName, T, l);
+        strcpy_s(native_city, T, city);
+        strcpy_s(native_country, T, country);
+    }
+
+    // --- Копіювальний конструктор ---
+    student(const student& other)
+        : date_of_birth(other.date_of_birth),
+        phone(other.phone),
+        number_of_the_group(other.number_of_the_group) {
+        strcpy_s(Name_of_study_place, T, other.Name_of_study_place);
+        strcpy_s(name, T, other.name);
+        strcpy_s(surname, T, other.surname);
+        strcpy_s(lastName, T, other.lastName);
+        strcpy_s(native_city, T, other.native_city);
+        strcpy_s(native_country, T, other.native_country);
+    }
+
+    // --- Деструктор ---
+    ~student() {
+        cout << "Пам'ять звільнено для " << name << endl;
+    }
+
+
+
 private:
     char Name_of_study_place[T]{ "Don't study at any place" };
     char name[T]{ "No name" };
@@ -73,19 +115,19 @@ int student::Get_number_of_the_group() const { return number_of_the_group; }
 
 // --- Реалізація сеттерів ---
 int student::Set_Name_of_study_place(const char* Name_of_study_place) {
-    strcpy_s(this->Name_of_study_place, Name_of_study_place);
+    strcpy_s(this->Name_of_study_place, T, Name_of_study_place);
     return 0;
 }
 int student::Set_name(const char* name) {
-    strcpy_s(this->name, name);
+    strcpy_s(this->name, T, name);
     return 0;
 }
 int student::Set_surname(const char* surname) {
-    strcpy_s(this->surname, surname);
+    strcpy_s(this->surname, T, surname);
     return 0;
 }
 int student::Set_lastName(const char* lastName) {
-    strcpy_s(this->lastName, lastName);
+    strcpy_s(this->lastName, T, lastName);
     return 0;
 }
 int student::Set_date_of_birth(int date_of_birth) {
@@ -97,11 +139,11 @@ int student::Set_phone(int phone) {
     return 0;
 }
 int student::Set_native_city(const char* native_city) {
-    strcpy_s(this->native_city, native_city);
+    strcpy_s(this->native_city, T, native_city);
     return 0;
 }
 int student::Set_native_country(const char* native_country) {
-    strcpy_s(this->native_country, native_country);
+    strcpy_s(this->native_country, T, native_country);
     return 0;
 }
 int student::Set_number_of_the_group(int number_of_the_group) {
@@ -166,9 +208,17 @@ int main()
     student s;
     s.InputInfo();
     s.ShowInfo();
-
-
 	s.IS_Student(s.Get_Name_of_study_place());
+
+
+    student s1;
+    s1.ShowInfo();
+
+    student s2("KPI", "Andrey", "Popov", "Ivanovich", 2000, 123456789, "Kyiv", "Ukraine", 12);
+    s2.ShowInfo();
+
+    student s3 = s2; // копіювання
+    s3.ShowInfo();
     return 0;
 
 

@@ -16,6 +16,8 @@ public:
 	void setName(const char* newName) { strncpy_s(name, T, newName, T - 1); name[T - 1] = '\0'; } // это мутаторы, которые позволяют установить значения закрытых переменных name, x и y. Они принимают параметры и изменяют состояние объекта.
 	void setX(int newX); // объявляем сеттеры в классе
 	void setY(int newY);
+	void show()const;
+	void input();
 
 private:
 	char name[T]{"Point"};
@@ -24,7 +26,26 @@ private:
 
 };
 
-
+void firstclass_MyPoint::show()const {
+	cout << "Name: " << getName() << endl;
+	cout << "X: " << getX() << endl;
+	cout << "Y: " << getY() << endl;
+}
+void firstclass_MyPoint::input() {
+	char buf[T];
+	cout << "Enter name: ";		
+	cin >> ws;
+	cin.getline(buf, T);
+	setName(buf);
+	cout << "Enter X: ";
+	int nx;
+	cin >> nx;
+	setX(nx);
+	cout << "Enter Y: ";
+	int ny;
+	cin >> ny;
+	setY(ny);
+}
 void firstclass_MyPoint::setX(int newX) { 
 	this->x = newX; }
 void firstclass_MyPoint::setY(int newY) { this->y = newY; }
@@ -53,9 +74,7 @@ int main()
 		point1.setX(15);
 	}
 
-	cout << "Name: " << point1.getName() << endl; 
-	cout << "X: " << point1.getX() << endl; 
-	cout << "Y: " << point1.getY() << endl; 
+	point1.show();
 
 	firstclass_MyPoint1 point2;
     point2.x = 10;

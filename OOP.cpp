@@ -6,6 +6,29 @@ using namespace std;
 
 #define T 30
 
+struct dt {
+	int day;
+	int month;
+	int year;
+
+	int input() {
+		cout << "Введіть день: ";
+		cin >> day;
+		cout << "Введіть місяць: ";
+		cin >> month;
+		cout << "Введіть рік: ";
+		cin >> year;
+	}
+
+	int output() const {
+		cout << "Дата: " << day << "." << month << "." << year << endl;
+	}
+};
+
+
+
+
+
 class student {
 
 
@@ -28,7 +51,7 @@ public:
     inline const char* Get_name() const;
     inline const char* Get_surname() const;
     inline const char* Get_lastName() const;
-    inline int Get_date_of_birth() const;
+    inline dt Get_date_of_birth() const;
     inline int Get_phone() const;
     inline const char* Get_native_city() const;
     inline const char* Get_native_country() const;
@@ -39,7 +62,7 @@ public:
     inline int Set_name(const char* name);
     inline int Set_surname(const char* surname);
     inline int Set_lastName(const char* lastName);
-    inline int Set_date_of_birth(int date_of_birth);
+    inline int Set_date_of_birth(const dt& date_of_birth);
     inline int Set_phone(int phone);
     inline int Set_native_city(const char* native_city);
     inline int Set_native_country(const char* native_country);
@@ -58,7 +81,7 @@ public:
 
     // --- Параметризований конструктор ---
     student(const char* study_place, const char* n, const char* s, const char* l,
-        int birth, int ph, const char* city, const char* country, int group)
+        dt birth, int ph, const char* city, const char* country, int group)
         : date_of_birth(birth), phone(ph), number_of_the_group(group) {
         strcpy_s(Name_of_study_place, T, study_place);
         strcpy_s(name, T, n);
@@ -93,7 +116,7 @@ private:
     char name[T]{ "No name" };
     char surname[T]{ "No surname" };
     char lastName[T]{ "No last name" };
-    int date_of_birth{ 0 };
+    dt date_of_birth{ 0, 0, 0 };
     int phone{ 0 };
     char native_city[T]{ "Without native city" };
     char native_country[T]{ "Without native country" };
@@ -107,7 +130,7 @@ const char* student::Get_Name_of_study_place() const { return Name_of_study_plac
 const char* student::Get_name() const { return name; }
 const char* student::Get_surname() const { return surname; }
 const char* student::Get_lastName() const { return lastName; }
-int student::Get_date_of_birth() const { return date_of_birth; }
+dt student::Get_date_of_birth() const { return date_of_birth; }
 int student::Get_phone() const { return phone; }
 const char* student::Get_native_city() const { return native_city; }
 const char* student::Get_native_country() const { return native_country; }
@@ -130,7 +153,7 @@ int student::Set_lastName(const char* lastName) {
     strcpy_s(this->lastName, T, lastName);
     return 0;
 }
-int student::Set_date_of_birth(int date_of_birth) {
+int student::Set_date_of_birth(const dt& date_of_birth) {
     this->date_of_birth = date_of_birth;
     return 0;
 }
@@ -163,8 +186,8 @@ void student::InputInfo() {
     cout << "Введіть по батькові: ";
     cin.getline(lastName, T);
 
-    cout << "Введіть дату народження (рік): ";
-    cin >> date_of_birth;
+    cout << "Введіть дату народження:\n";
+    date_of_birth.input();
 
     cout << "Введіть номер телефону: ";
     cin >> phone;
@@ -191,7 +214,8 @@ void student::ShowInfo() const {
     cout << "Ім'я: " << name << endl;
     cout << "Прізвище: " << surname << endl;
     cout << "По батькові: " << lastName << endl;
-    cout << "Дата народження: " << date_of_birth << endl;
+    cout << "Дата народження: ";
+    date_of_birth.output();
     cout << "Телефон: " << phone << endl;
     cout << "Місто: " << native_city << endl;
     cout << "Країна: " << native_country << endl;
@@ -213,8 +237,9 @@ int main()
 
     student s1;
     s1.ShowInfo();
+    dt birth{ 10, 12, 2010 };
+    student s2("KPI", "Andrey", "Popov", "Ivanovich", birth, 123456789, "Kyiv", "Ukraine", 12);
 
-    student s2("KPI", "Andrey", "Popov", "Ivanovich", 2000, 123456789, "Kyiv", "Ukraine", 12);
     s2.ShowInfo();
 
     student s3 = s2; // копіювання

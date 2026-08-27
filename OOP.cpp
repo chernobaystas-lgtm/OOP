@@ -6,6 +6,24 @@ using namespace std;
 
 #define T 20
 
+struct Date {
+	int day;
+	int month;
+	int year;
+	void show()const {
+		cout << "Date: " << day << "." << month << "." << year << endl;
+	}	
+	void input() {
+		cout << "Enter day: ";
+		cin >> day;
+		cout << "Enter month: ";
+		cin >> month;
+		cout << "Enter year: ";
+		cin >> year;
+	}
+};
+
+
 class firstclass_MyPoint {
 
 public: 
@@ -23,6 +41,7 @@ private:
 	char name[T]{"Point"};
 	int x{0};
 	int y{0};
+	Date myDate{ 0, 0, 0 }; // это закрытые переменные, которые хранят состояние объекта. Они недоступны напрямую из других частей программы.
 
 };
 
@@ -30,7 +49,7 @@ void firstclass_MyPoint::show()const {
 	cout << "Name: " << getName() << endl;
 	cout << "X: " << getX() << endl;
 	cout << "Y: " << getY() << endl;
-	cout << "Date" << 
+	myDate.show();
 }
 void firstclass_MyPoint::input() {
 	char buf[T];
@@ -46,6 +65,8 @@ void firstclass_MyPoint::input() {
 	int ny;
 	cin >> ny;
 	setY(ny);
+	cout << "Enter date: " << endl;
+	myDate.input();	
 }
 void firstclass_MyPoint::setX(int newX) { 
 	this->x = newX; }

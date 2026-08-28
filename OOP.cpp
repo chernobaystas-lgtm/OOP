@@ -27,6 +27,18 @@ struct Date {
 class firstclass_MyPoint {
 
 public: 
+	firstclass_MyPoint() {
+		cout << "Constructor called" << endl;
+	}
+	firstclass_MyPoint(const char*, int, int) {
+		cout << "Constructor with parameters called" << endl;
+	}
+	firstclass_MyPoint(const char*, int, int, Date);
+	~firstclass_MyPoint() {
+		cout << "Destructor called" << endl;
+	}
+
+
 	const char* getName()const { return (strcmp(name, "") == 0) ? "Point" : name; }
 	int getX()const { return x; }
 	int getY()const { return y; } // это аксессоры, которые позволяют получить значения закрытых переменных x и y. Они объявлены как константные методы, что означает, что они не изменяют состояние объекта.
@@ -87,6 +99,7 @@ int main()
 	// private public protected - это модификаторы доступа в C++. Они определяют, какие члены класса (переменные и функции) могут быть доступны из других частей программы.
 	// private - члены класса доступны только внутри самого класса. public - члены класса доступны из любого места программы. protected - члены класса доступны внутри самого класса и его наследников.
 	// конструктор и деструктор - это специальные функции-члены класса, которые вызываются при создании и уничтожении объекта соответственно. Конструктор инициализирует объект, а деструктор освобождает ресурсы, связанные с объектом. 
+	// конструктор иницилизатор - это конструктор, который использует список инициализации для установки значений членов класса. Он вызывается перед телом конструктора и позволяет инициализировать константные члены и ссылки.
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 

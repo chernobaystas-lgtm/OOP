@@ -30,12 +30,15 @@ public:
 	firstclass_MyPoint() : name(nullptr), x(0), y(0), myDate{ 0,0,0 } {
 		cout << "Constructor called" << endl;
 	}
-
 	firstclass_MyPoint(const char*, int, int) {
 		cout << "Constructor with parameters called" << endl;
 	}
 	firstclass_MyPoint(const char*, int, int, Date);
 	~firstclass_MyPoint() {
+		if (name != nullptr) {
+			delete[] name;
+			name = nullptr;
+		}
 		cout << "Destructor called" << endl;
 	}
 

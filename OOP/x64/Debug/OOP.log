@@ -1,3 +1,2 @@
 ﻿  OOP.cpp
-C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(21,1): error C4716: dt::input: должна возвращать значение
-C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(25,1): error C4716: dt::output: должна возвращать значение
+  OOP.vcxproj -> C:\Users\Admin\Visual Studio\OOP\OOP\x64\Debug\OOP.exe

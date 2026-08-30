@@ -71,24 +71,24 @@ public:
 
     // --- Конструктор за замовчуванням ---
     student() : date_of_birth(0), phone(0), number_of_the_group(0) {
-        copy_field(Name_of_study_place, "Don't study at any place");
-        copy_field(name, "No name");
-        copy_field(surname, "No surname");
-        copy_field(lastName, "No last name");
-        copy_field(native_city, "Without native city");
-        copy_field(native_country, "Without native country");
+        copy_field2(Name_of_study_place, "Don't study at any place");
+        copy_field2(name, "No name");
+        copy_field2(surname, "No surname");
+        copy_field2(lastName, "No last name");
+        copy_field2(native_city, "Without native city");
+        copy_field2(native_country, "Without native country");
     }
 
     // --- Параметризований конструктор ---
     student(const char* study_place, const char* n, const char* s, const char* l,
         dt birth, int ph, const char* city, const char* country, int group)
         : date_of_birth(birth), phone(ph), number_of_the_group(group) {
-        copy_field(Name_of_study_place, study_place);
-        copy_field(name, n);
-        copy_field(surname, s);
-        copy_field(lastName, l);
-        copy_field(native_city, city);
-        copy_field(native_country, country);
+        copy_field2(Name_of_study_place, study_place);
+        copy_field2(name, n);
+        copy_field2(surname, s);
+        copy_field2(lastName, l);
+        copy_field2(native_city, city);
+        copy_field2(native_country, country);
     }
 
 
@@ -139,12 +139,23 @@ private:
     int number_of_the_group{ 0 };
 
 
-    static void copy_field(char*& dst, const char* src) {
+    /*static void copy_field(char*& dst, const char* src) {
         delete[] dst;
         dst = nullptr;
         if (src != nullptr) {
             dst = new char[strlen(src) + 1];
             strcpy_s(dst, strlen(src) + 1, src);
+        }
+    }*/
+
+    static void copy_field2(char*& dst, const char* src) {
+        delete[] dst;
+        dst = new char[T];
+        if (src != nullptr) {
+            strcpy_s(dst, T, src);
+        }
+        else {
+            dst[0] = '\0';
         }
     }
 
@@ -217,7 +228,6 @@ void student::InputInfo() {
 
     cout << "Введіть номер телефону: ";
     cin >> phone;
-    cin.ignore();
 
     cout << "Введіть місто: ";
     cin.getline(native_city, T);
@@ -254,12 +264,12 @@ student::student(const student& other)
     : date_of_birth(other.date_of_birth),
     phone(other.phone),
     number_of_the_group(other.number_of_the_group) {
-    copy_field(name, other.name);
-    copy_field(surname, other.surname);
-    copy_field(lastName, other.lastName);
-    copy_field(native_city, other.native_city);
-    copy_field(native_country, other.native_country);
-    copy_field(Name_of_study_place, other.Name_of_study_place);
+    copy_field2(name, other.name);
+    copy_field2(surname, other.surname);
+    copy_field2(lastName, other.lastName);
+    copy_field2(native_city, other.native_city);
+    copy_field2(native_country, other.native_country);
+    copy_field2(Name_of_study_place, other.Name_of_study_place);
 }
 
 student student::operator=(const student& other) {
@@ -269,12 +279,12 @@ student student::operator=(const student& other) {
     phone = other.phone;
     number_of_the_group = other.number_of_the_group;
 
-    copy_field(name, other.name);
-    copy_field(surname, other.surname);
-    copy_field(lastName, other.lastName);
-    copy_field(native_city, other.native_city);
-    copy_field(native_country, other.native_country);
-    copy_field(Name_of_study_place, other.Name_of_study_place);
+    copy_field2(name, other.name);
+    copy_field2(surname, other.surname);
+    copy_field2(lastName, other.lastName);
+    copy_field2(native_city, other.native_city);
+    copy_field2(native_country, other.native_country);
+    copy_field2(Name_of_study_place, other.Name_of_study_place);
 
     return *this;
 }

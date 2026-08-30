@@ -40,17 +40,18 @@ public:
 
 
 	const char* getName()const { return (strcmp(name, "") == 0) ? "Point" : name; }
-	int getX()const { return x; }
-	int getY()const { return y; } // это аксессоры, которые позволяют получить значения закрытых переменных x и y. Они объявлены как константные методы, что означает, что они не изменяют состояние объекта.
+	inline int getX()const { return x; }
+	inline int getY()const { return y; } // это аксессоры, которые позволяют получить значения закрытых переменных x и y. Они объявлены как константные методы, что означает, что они не изменяют состояние объекта.
+	inline Date getDate()const { return myDate; }
 
-	void setName(const char* newName) { strncpy_s(name, T, newName, T - 1); name[T - 1] = '\0'; } // это мутаторы, которые позволяют установить значения закрытых переменных name, x и y. Они принимают параметры и изменяют состояние объекта.
-	void setX(int newX); // объявляем сеттеры в классе
-	void setY(int newY);
-	void show()const;
-	void input();
+	inline void setName(const char* newName); // это мутаторы, которые позволяют установить значения закрытых переменных name, x и y. Они принимают параметры и изменяют состояние объекта.
+	inline void setX(int newX); // объявляем сеттеры в классе
+	inline void setY(int newY);
+	inline void show()const;
+	inline void input();
 
 private:
-	char name[T]{"Point"};
+	char* name;
 	int x{0};
 	int y{0};
 	Date myDate{ 0, 0, 0 }; // это закрытые переменные, которые хранят состояние объекта. Они недоступны напрямую из других частей программы.
@@ -84,12 +85,19 @@ void firstclass_MyPoint::setX(int newX) {
 	this->x = newX; }
 void firstclass_MyPoint::setY(int newY) { this->y = newY; }
 
-struct firstclass_MyPoint1 {
-    char name[T]{"Point"};
-    int x{0};
-    int y{0};
 
-};
+void firstclass_MyPoint::setName(const char* newName) {
+	if (strlen(newName) != 0) {
+		if (name != nullptr) delete[] name;
+		name = new char[strlen(newName) + 1];
+		strcpy_s(name, strlen(newName) + 1, newName);
+	}
+}
+
+
+
+
+
 
 int main()
 { 
@@ -111,10 +119,6 @@ int main()
 	}
 
 	point1.show();
-
-	firstclass_MyPoint1 point2;
-    point2.x = 10;
-
 
 
 }

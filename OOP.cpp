@@ -28,8 +28,21 @@ struct dt {
 
 
 
+class Entity {
+protected:
+    static void copy_field2(char*& dst, const char* src) {
+        delete[] dst;
+        dst = new char[T];
+        if (src != nullptr) {
+            strcpy_s(dst, T, src);
+        }
+        else {
+            dst[0] = '\0';
+        }
+    }
+};
 
-class student {
+class student : public Entity {
 
 
 public:
@@ -125,7 +138,8 @@ public:
     student(const student&);
     student operator=(const student&);
 
-
+    student(student&& other) noexcept;
+    student& operator=(student&& other) noexcept;
 
 private:
     char* Name_of_study_place{ nullptr };
@@ -148,16 +162,7 @@ private:
         }
     }*/
 
-    static void copy_field2(char*& dst, const char* src) {
-        delete[] dst;
-        dst = new char[T];
-        if (src != nullptr) {
-            strcpy_s(dst, T, src);
-        }
-        else {
-            dst[0] = '\0';
-        }
-    }
+
 
 };
 
@@ -247,15 +252,15 @@ void student::InputInfo() {
 
 void student::ShowInfo() const {
     cout << "\n--- Інформація про студента ---\n";
-    cout << "Ім'я: " << name << endl;
-    cout << "Прізвище: " << surname << endl;
-    cout << "По батькові: " << lastName << endl;
+    cout << "Ім'я: " << (name ? name : "(порожньо після move)") << endl;
+    cout << "Прізвище: " << (surname ? surname : "(порожньо після move)") << endl;
+    cout << "По батькові: " << (lastName ? lastName : "(порожньо після move)") << endl;
     cout << "Дата народження: ";
     date_of_birth.output();
     cout << "Телефон: " << phone << endl;
-    cout << "Місто: " << native_city << endl;
-    cout << "Країна: " << native_country << endl;
-    cout << "Навчальний заклад: " << Name_of_study_place << endl;
+    cout << "Місто: " << (native_city ? native_city : "(порожньо після move)") << endl;
+    cout << "Країна: " << (native_country ? native_country : "(порожньо після move)") << endl;
+    cout << "Навчальний заклад: " << (Name_of_study_place ? Name_of_study_place : "(порожньо після move)") << endl;
     cout << "Номер групи: " << number_of_the_group << endl;
 }
 
@@ -290,27 +295,189 @@ student student::operator=(const student& other) {
 }
 
 
+student::student(student&& other) noexcept
+    : date_of_birth(other.date_of_birth),
+    phone(other.phone),
+    number_of_the_group(other.number_of_the_group) {
+
+    name = other.name;
+    surname = other.surname;
+    lastName = other.lastName;
+    native_city = other.native_city;
+    native_country = other.native_country;
+    Name_of_study_place = other.Name_of_study_place;
+
+    other.name = nullptr;
+    other.surname = nullptr;
+    other.lastName = nullptr;
+    other.native_city = nullptr;
+    other.native_country = nullptr;
+    other.Name_of_study_place = nullptr;
+}
+
+
+student& student::operator=(student&& other) noexcept {
+    if (this == &other) return *this;
+
+    delete[] name;
+    delete[] surname;
+    delete[] lastName;
+    delete[] native_city;
+    delete[] native_country;
+    delete[] Name_of_study_place;
+
+    date_of_birth = other.date_of_birth;
+    phone = other.phone;
+    number_of_the_group = other.number_of_the_group;
+
+    name = other.name;
+    surname = other.surname;
+    lastName = other.lastName;
+    native_city = other.native_city;
+    native_country = other.native_country;
+    Name_of_study_place = other.Name_of_study_place;
+
+    other.name = nullptr;
+    other.surname = nullptr;
+    other.lastName = nullptr;
+    other.native_city = nullptr;
+    other.native_country = nullptr;
+    other.Name_of_study_place = nullptr;
+
+    return *this;
+}
+
+
+
+class Group : public Entity {
+public:
+    Group() : count(0) {
+        copy_field2(group_name, "No group name");
+        students = nullptr;
+    }
+
+    Group(const char* name, int studentCount) : count(studentCount) {
+        copy_field2(group_name, name);
+        students = new student[count]; // каждый студент создаётся конструктором за замовчуванням
+    }
+
+    // --- Конструктор копіювання ---
+    Group(const Group& other) : count(other.count) {
+        copy_field2(group_name, other.group_name);
+        students = new student[count];
+        for (int i = 0; i < count; ++i) {
+            students[i] = other.students[i]; // переиспользуем operator= студента
+        }
+    }
+
+    // --- Оператор присвоєння ---
+    Group& operator=(const Group& other) {
+        if (this == &other) return *this;
+        copy_field2(group_name, other.group_name);
+
+        delete[] students;
+        count = other.count;
+        students = new student[count];
+        for (int i = 0; i < count; ++i) {
+            students[i] = other.students[i];
+        }
+        return *this;
+    }
+
+    // --- Move-конструктор ---
+    Group(Group&& other) noexcept : count(other.count) {
+        group_name = other.group_name;
+        students = other.students;
+
+        other.group_name = nullptr;
+        other.students = nullptr;
+        other.count = 0;
+    }
+
+    // --- Move-присвоєння ---
+    Group& operator=(Group&& other) noexcept {
+        if (this == &other) return *this;
+        delete[] group_name;
+        delete[] students;
+
+        group_name = other.group_name;
+        students = other.students;
+        count = other.count;
+
+        other.group_name = nullptr;
+        other.students = nullptr;
+        other.count = 0;
+        return *this;
+    }
+
+    ~Group() {
+        delete[] group_name;
+        delete[] students;
+    }
+
+    void AddStudent(const student& s, int index) {
+        if (index >= 0 && index < count) {
+            students[index] = s; // тут срабатывает student::operator=
+        }
+    }
+
+    void ShowGroupInfo() const {
+        cout << "\n=== Група: " << group_name << " ===\n";
+        for (int i = 0; i < count; ++i) {
+            students[i].ShowInfo();
+        }
+    }
+
+    const char* Get_group_name() const { return group_name; }
+    int Get_count() const { return count; }
+
+private:
+    char* group_name{ nullptr };
+    student* students{ nullptr };
+    int count{ 0 };
+};
+
 int main()
 { 
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
 
-    student s;
-    s.InputInfo();
-    s.ShowInfo();
-	s.IS_Student(s.Get_Name_of_study_place());
 
 
-    student s1;
-    s1.ShowInfo();
+
     dt birth{ 10, 12, 2010 };
     student s2("KPI", "Andrey", "Popov", "Ivanovich", birth, 123456789, "Kyiv", "Ukraine", 12);
 
+    cout << "\n=== s2 (оригінал) ===\n";
     s2.ShowInfo();
 
-    student s3 = s2; // копіювання
+    // --- Перевірка копіювання ---
+    student s3 = s2;
+    cout << "\n=== s3 (копія s2) ===\n";
     s3.ShowInfo();
+
+    s3.Set_name("Changed");
+    cout << "\n=== s2 після зміни s3 (має лишитись Andrey) ===\n";
+    s2.ShowInfo();
+
+    // --- Перевірка move ---
+    student s4 = std::move(s2);
+    cout << "\n=== s4 (move з s2) ===\n";
+    s4.ShowInfo();
+
+    cout << "\n=== s2 після move (поля мають бути порожні/null) ===\n";
+    // тут может крашнуть если ShowInfo пытается вывести nullptr — это ожидаемо после move
+
+    // --- Перевірка move-присвоєння ---
+    student s5;
+    s5 = std::move(s3);
+    cout << "\n=== s5 (move-присвоєння з s3) ===\n";
+    s5.ShowInfo();
+
+
+
+
     return 0;
 
 

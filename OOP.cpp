@@ -27,9 +27,10 @@ struct Date {
 class firstclass_MyPoint {
 
 public: 
-	firstclass_MyPoint() {
+	firstclass_MyPoint() : name(nullptr), x(0), y(0), myDate{ 0,0,0 } {
 		cout << "Constructor called" << endl;
 	}
+
 	firstclass_MyPoint(const char*, int, int) {
 		cout << "Constructor with parameters called" << endl;
 	}
@@ -51,7 +52,7 @@ public:
 	inline void input();
 
 private:
-	char* name;
+	char* name{nullptr};
 	int x{0};
 	int y{0};
 	Date myDate{ 0, 0, 0 }; // это закрытые переменные, которые хранят состояние объекта. Они недоступны напрямую из других частей программы.

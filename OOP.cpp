@@ -106,20 +106,49 @@ public:
 
     // --- Деструктор ---
     ~student() {
+		if (Name_of_study_place) {
+			delete[] Name_of_study_place;
+			Name_of_study_place = nullptr;
+		}
+		if (name) {
+			delete[] name;
+			name = nullptr;
+		}
+		if (surname) {
+			delete[] surname;
+			surname = nullptr;
+		}
+		if (lastName) {
+			delete[] lastName;
+			lastName = nullptr;
+		}
+		if (native_city) {
+			delete[] native_city;
+			native_city = nullptr;
+		}
+		if (native_country) {
+			delete[] native_country;
+			native_country = nullptr;
+		}
         cout << "Пам'ять звільнено для " << name << endl;
     }
+
+	// --- Перевантаження оператора присвоєння ---
+
+    student(const student&);
+    student operator=(const student&);
 
 
 
 private:
-    char Name_of_study_place[T]{ "Don't study at any place" };
-    char name[T]{ "No name" };
-    char surname[T]{ "No surname" };
-    char lastName[T]{ "No last name" };
+    char* Name_of_study_place{ nullptr };
+    char* name{ nullptr };
+    char* surname{ nullptr };
+    char* lastName{ nullptr };
     dt date_of_birth{ 0, 0, 0 };
     int phone{ 0 };
-    char native_city[T]{ "Without native city" };
-    char native_country[T]{ "Without native country" };
+    char* native_city{ nullptr };
+    char* native_country{ nullptr };
     int number_of_the_group{ 0 };
 
 };
@@ -222,6 +251,113 @@ void student::ShowInfo() const {
     cout << "Навчальний заклад: " << Name_of_study_place << endl;
     cout << "Номер групи: " << number_of_the_group << endl;
 }
+
+
+student::student(const student& other){
+    date_of_birth = other.date_of_birth;
+	phone = other.phone;
+	number_of_the_group = other.number_of_the_group;
+    
+
+	name = nullptr;
+	surname = nullptr;
+	lastName = nullptr;
+	native_city = nullptr;
+	native_country = nullptr;
+	Name_of_study_place = nullptr;
+
+	if (other.name != nullptr) {
+		name = new char[strlen(other.name) + 1];
+		strcpy_s(name, strlen(other.name) + 1, other.name);
+	}
+	if (other.surname != nullptr) {
+		surname = new char[strlen(other.surname) + 1];
+		strcpy_s(surname, strlen(other.surname) + 1, other.surname);
+	}
+	if (other.lastName != nullptr) {
+		lastName = new char[strlen(other.lastName) + 1];
+		strcpy_s(lastName, strlen(other.lastName) + 1, other.lastName);
+	}
+	if (other.native_city != nullptr) {
+		native_city = new char[strlen(other.native_city) + 1];
+		strcpy_s(native_city, strlen(other.native_city) + 1, other.native_city);
+	}
+	if (other.native_country != nullptr) {
+		native_country = new char[strlen(other.native_country) + 1];
+		strcpy_s(native_country, strlen(other.native_country) + 1, other.native_country);
+	}
+	if (other.Name_of_study_place != nullptr) {
+		Name_of_study_place = new char[strlen(other.Name_of_study_place) + 1];
+		strcpy_s(Name_of_study_place, strlen(other.Name_of_study_place) + 1, other.Name_of_study_place);
+	}
+}
+
+student student::operator=(const student& other) {
+
+
+	// Копіювання даних з іншого об'єкта
+	date_of_birth = other.date_of_birth;
+	phone = other.phone;
+	number_of_the_group = other.number_of_the_group;
+
+	if (name != nullptr) {
+		delete[] name;
+        name = nullptr;
+	}
+	if (other.name != nullptr) {
+		name = new char[strlen(other.name) + 1];
+		strcpy_s(name, strlen(other.name) + 1, other.name);
+	}
+
+	if (surname != nullptr) {
+		delete[] surname;
+		surname = nullptr;
+	}
+	if (other.surname != nullptr) {
+		surname = new char[strlen(other.surname) + 1];
+		strcpy_s(surname, strlen(other.surname) + 1, other.surname);
+	}
+
+	if (lastName != nullptr) {
+		delete[] lastName;
+		lastName = nullptr;
+	}
+	if (other.lastName != nullptr) {
+		lastName = new char[strlen(other.lastName) + 1];
+		strcpy_s(lastName, strlen(other.lastName) + 1, other.lastName);
+	}
+
+	if (native_city != nullptr) {
+		delete[] native_city;
+		native_city = nullptr;
+	}
+	if (other.native_city != nullptr) {
+		native_city = new char[strlen(other.native_city) + 1];
+		strcpy_s(native_city, strlen(other.native_city) + 1, other.native_city);
+	}
+
+	if (native_country != nullptr) {
+		delete[] native_country;
+		native_country = nullptr;
+	}
+	if (other.native_country != nullptr) {
+		native_country = new char[strlen(other.native_country) + 1];
+		strcpy_s(native_country, strlen(other.native_country) + 1, other.native_country);
+	}
+
+	if (Name_of_study_place != nullptr) {
+		delete[] Name_of_study_place;
+		Name_of_study_place = nullptr;
+	}
+    if (other.Name_of_study_place != nullptr) {
+        Name_of_study_place = new char[strlen(other.Name_of_study_place) + 1];
+        strcpy_s(Name_of_study_place, strlen(other.Name_of_study_place) + 1, other.Name_of_study_place);
+    }
+
+
+	return *this;
+}
+
 
 int main()
 { 

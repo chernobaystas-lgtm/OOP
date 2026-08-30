@@ -33,7 +33,9 @@ public:
 	firstclass_MyPoint(const char*, int, int) {
 		cout << "Constructor with parameters called" << endl;
 	}
-	firstclass_MyPoint(const char*, int, int, Date);
+	firstclass_MyPoint(const firstclass_MyPoint&);
+	firstclass_MyPoint operator=(const firstclass_MyPoint&);
+	firstclass_MyPoint(const char*, int, int, Date&);
 	~firstclass_MyPoint() {
 		if (name != nullptr) {
 			delete[] name;
@@ -99,6 +101,34 @@ void firstclass_MyPoint::setName(const char* newName) {
 }
 
 
+firstclass_MyPoint::firstclass_MyPoint(const firstclass_MyPoint& other) {
+	x = other.x;
+	y = other.y;
+	myDate = other.myDate;
+	name = nullptr;
+	if (other.name != nullptr) {
+		name = new char[strlen(other.name) + 1];
+		strcpy_s(name, strlen(other.name) + 1, other.name);
+
+	}
+}
+
+firstclass_MyPoint firstclass_MyPoint::operator=(const firstclass_MyPoint& other) {
+	x = other.x;
+	y = other.y;
+	myDate = other.myDate;
+	if (name != nullptr) {
+		delete[] name;
+		name = nullptr;
+	}
+	if (other.name != nullptr) {
+		name = new char[strlen(other.name) + 1];
+		strcpy_s(name, strlen(other.name) + 1, other.name);
+
+	}
+
+}
+
 
 
 
@@ -112,6 +142,8 @@ int main()
 	// private - члены класса доступны только внутри самого класса. public - члены класса доступны из любого места программы. protected - члены класса доступны внутри самого класса и его наследников.
 	// конструктор и деструктор - это специальные функции-члены класса, которые вызываются при создании и уничтожении объекта соответственно. Конструктор инициализирует объект, а деструктор освобождает ресурсы, связанные с объектом. 
 	// конструктор иницилизатор - это конструктор, который использует список инициализации для установки значений членов класса. Он вызывается перед телом конструктора и позволяет инициализировать константные члены и ссылки.
+	// конструктор копирования( по битовому) - это конструктор, который создает новый объект как копию существующего объекта. Он копирует значения всех членов класса из исходного объекта в новый объект. Если не определен явно, компилятор создает его автоматически.
+	// опиратор присваивания - это оператор, который позволяет присвоить значения одного объекта другому объекту того же класса. Он должен быть определен явно, если класс содержит динамически выделенную память или другие ресурсы.
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 

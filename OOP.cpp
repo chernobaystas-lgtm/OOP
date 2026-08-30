@@ -92,17 +92,7 @@ public:
     }
 
     // --- Копіювальний конструктор ---
-    student(const student& other)
-        : date_of_birth(other.date_of_birth),
-        phone(other.phone),
-        number_of_the_group(other.number_of_the_group) {
-        strcpy_s(Name_of_study_place, T, other.Name_of_study_place);
-        strcpy_s(name, T, other.name);
-        strcpy_s(surname, T, other.surname);
-        strcpy_s(lastName, T, other.lastName);
-        strcpy_s(native_city, T, other.native_city);
-        strcpy_s(native_country, T, other.native_country);
-    }
+
 
     // --- Деструктор ---
     ~student() {

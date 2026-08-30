@@ -1,2 +1,9 @@
 ﻿  OOP.cpp
-  OOP.vcxproj -> C:\Users\Admin\Visual Studio\OOP\OOP\x64\Debug\OOP.exe
+C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(137,5): error C2535: student::student(const student &): функция-член уже определена или объявлена
+      C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(95,5):
+       см. объявление "student::student"
+  
+C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(265,10): error C2084: функция "student::student(const student &)" уже имеет текст реализации
+      C:\Users\Admin\Visual Studio\OOP\OOP\OOP.cpp(95,5):
+      см. предыдущее определение "student::student"
+  

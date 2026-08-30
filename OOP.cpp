@@ -130,7 +130,6 @@ public:
 			delete[] native_country;
 			native_country = nullptr;
 		}
-        cout << "Пам'ять звільнено для " << name << endl;
     }
 
 	// --- Перевантаження оператора присвоєння ---
@@ -150,6 +149,16 @@ private:
     char* native_city{ nullptr };
     char* native_country{ nullptr };
     int number_of_the_group{ 0 };
+
+
+    static void copy_field(char*& dst, const char* src) {
+        delete[] dst;
+        dst = nullptr;
+        if (src != nullptr) {
+            dst = new char[strlen(src) + 1];
+            strcpy_s(dst, strlen(src) + 1, src);
+        }
+    }
 
 };
 
@@ -253,109 +262,33 @@ void student::ShowInfo() const {
 }
 
 
-student::student(const student& other){
-    date_of_birth = other.date_of_birth;
-	phone = other.phone;
-	number_of_the_group = other.number_of_the_group;
-    
-
-	name = nullptr;
-	surname = nullptr;
-	lastName = nullptr;
-	native_city = nullptr;
-	native_country = nullptr;
-	Name_of_study_place = nullptr;
-
-	if (other.name != nullptr) {
-		name = new char[strlen(other.name) + 1];
-		strcpy_s(name, strlen(other.name) + 1, other.name);
-	}
-	if (other.surname != nullptr) {
-		surname = new char[strlen(other.surname) + 1];
-		strcpy_s(surname, strlen(other.surname) + 1, other.surname);
-	}
-	if (other.lastName != nullptr) {
-		lastName = new char[strlen(other.lastName) + 1];
-		strcpy_s(lastName, strlen(other.lastName) + 1, other.lastName);
-	}
-	if (other.native_city != nullptr) {
-		native_city = new char[strlen(other.native_city) + 1];
-		strcpy_s(native_city, strlen(other.native_city) + 1, other.native_city);
-	}
-	if (other.native_country != nullptr) {
-		native_country = new char[strlen(other.native_country) + 1];
-		strcpy_s(native_country, strlen(other.native_country) + 1, other.native_country);
-	}
-	if (other.Name_of_study_place != nullptr) {
-		Name_of_study_place = new char[strlen(other.Name_of_study_place) + 1];
-		strcpy_s(Name_of_study_place, strlen(other.Name_of_study_place) + 1, other.Name_of_study_place);
-	}
+student::student(const student& other)
+    : date_of_birth(other.date_of_birth),
+    phone(other.phone),
+    number_of_the_group(other.number_of_the_group) {
+    copy_field(name, other.name);
+    copy_field(surname, other.surname);
+    copy_field(lastName, other.lastName);
+    copy_field(native_city, other.native_city);
+    copy_field(native_country, other.native_country);
+    copy_field(Name_of_study_place, other.Name_of_study_place);
 }
 
 student student::operator=(const student& other) {
+    if (this == &other) return *this;
 
+    date_of_birth = other.date_of_birth;
+    phone = other.phone;
+    number_of_the_group = other.number_of_the_group;
 
-	// Копіювання даних з іншого об'єкта
-	date_of_birth = other.date_of_birth;
-	phone = other.phone;
-	number_of_the_group = other.number_of_the_group;
+    copy_field(name, other.name);
+    copy_field(surname, other.surname);
+    copy_field(lastName, other.lastName);
+    copy_field(native_city, other.native_city);
+    copy_field(native_country, other.native_country);
+    copy_field(Name_of_study_place, other.Name_of_study_place);
 
-	if (name != nullptr) {
-		delete[] name;
-        name = nullptr;
-	}
-	if (other.name != nullptr) {
-		name = new char[strlen(other.name) + 1];
-		strcpy_s(name, strlen(other.name) + 1, other.name);
-	}
-
-	if (surname != nullptr) {
-		delete[] surname;
-		surname = nullptr;
-	}
-	if (other.surname != nullptr) {
-		surname = new char[strlen(other.surname) + 1];
-		strcpy_s(surname, strlen(other.surname) + 1, other.surname);
-	}
-
-	if (lastName != nullptr) {
-		delete[] lastName;
-		lastName = nullptr;
-	}
-	if (other.lastName != nullptr) {
-		lastName = new char[strlen(other.lastName) + 1];
-		strcpy_s(lastName, strlen(other.lastName) + 1, other.lastName);
-	}
-
-	if (native_city != nullptr) {
-		delete[] native_city;
-		native_city = nullptr;
-	}
-	if (other.native_city != nullptr) {
-		native_city = new char[strlen(other.native_city) + 1];
-		strcpy_s(native_city, strlen(other.native_city) + 1, other.native_city);
-	}
-
-	if (native_country != nullptr) {
-		delete[] native_country;
-		native_country = nullptr;
-	}
-	if (other.native_country != nullptr) {
-		native_country = new char[strlen(other.native_country) + 1];
-		strcpy_s(native_country, strlen(other.native_country) + 1, other.native_country);
-	}
-
-	if (Name_of_study_place != nullptr) {
-		delete[] Name_of_study_place;
-		Name_of_study_place = nullptr;
-	}
-    if (other.Name_of_study_place != nullptr) {
-        Name_of_study_place = new char[strlen(other.Name_of_study_place) + 1];
-        strcpy_s(Name_of_study_place, strlen(other.Name_of_study_place) + 1, other.Name_of_study_place);
-    }
-
-
-	return *this;
+    return *this;
 }
 
 

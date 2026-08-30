@@ -11,7 +11,7 @@ struct dt {
 	int month;
 	int year;
 
-	int input() {
+	void input() {
 		cout << "Введіть день: ";
 		cin >> day;
 		cout << "Введіть місяць: ";
@@ -20,7 +20,7 @@ struct dt {
 		cin >> year;
 	}
 
-	int output() const {
+	void output() const {
 		cout << "Дата: " << day << "." << month << "." << year << endl;
 	}
 };
@@ -71,27 +71,25 @@ public:
 
     // --- Конструктор за замовчуванням ---
     student() : date_of_birth(0), phone(0), number_of_the_group(0) {
-        strcpy_s(Name_of_study_place, T, "Don't study at any place");
-        strcpy_s(name, T, "No name");
-        strcpy_s(surname, T, "No surname");
-        strcpy_s(lastName, T, "No last name");
-        strcpy_s(native_city, T, "Without native city");
-        strcpy_s(native_country, T, "Without native country");
+        copy_field(Name_of_study_place, "Don't study at any place");
+        copy_field(name, "No name");
+        copy_field(surname, "No surname");
+        copy_field(lastName, "No last name");
+        copy_field(native_city, "Without native city");
+        copy_field(native_country, "Without native country");
     }
 
     // --- Параметризований конструктор ---
     student(const char* study_place, const char* n, const char* s, const char* l,
         dt birth, int ph, const char* city, const char* country, int group)
         : date_of_birth(birth), phone(ph), number_of_the_group(group) {
-        strcpy_s(Name_of_study_place, T, study_place);
-        strcpy_s(name, T, n);
-        strcpy_s(surname, T, s);
-        strcpy_s(lastName, T, l);
-        strcpy_s(native_city, T, city);
-        strcpy_s(native_country, T, country);
+        copy_field(Name_of_study_place, study_place);
+        copy_field(name, n);
+        copy_field(surname, s);
+        copy_field(lastName, l);
+        copy_field(native_city, city);
+        copy_field(native_country, country);
     }
-
-    // --- Копіювальний конструктор ---
 
 
     // --- Деструктор ---

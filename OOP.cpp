@@ -14,13 +14,38 @@ private:
 
 
 public:
-
-    void input() {
-        cout << "input how many elements will br in array";
-        cin >> size;
-    }
+	void input();
+	void show();
+	void setNew_number(int index);
 
 };
+
+
+
+
+void Array::input() {
+	cout << "input how many elements will br in array";
+	cin >> size;
+	for (int i = 0; i < size; ++i) {
+		cout << "enter number";
+		cin >> arr[i];
+	}
+}
+
+void Array::show() {
+	for (int i = 0; i < size; ++i) {
+		cout << arr[i];
+	}
+}
+
+void Array::setNew_number(int index) {
+	int new_index = -index;
+	cout << "Enter new number ";
+	int new_number{ 0 };
+	cin >> new_number;
+	this->arr[new_index] = new_number;
+}
+
 
 
 

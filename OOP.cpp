@@ -15,7 +15,10 @@ private:
 
 public:
 
-
+    void input() {
+        cout << "input how many elements will br in array";
+        cin >> size;
+    }
 
 };
 

@@ -341,7 +341,9 @@
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\winsvc.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\mcx.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\imm.h",
-            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\ime_cmodes.h"
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\ime_cmodes.h",
+            "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\cassert",
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\ucrt\\assert.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

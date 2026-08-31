@@ -18,6 +18,23 @@ public:
 	void show();
 	void setNew_number(int index);
 
+
+	Array() : arr(nullptr), size(0) {
+		cout << "Constructor called" << endl;
+	}
+	Array(int*, int) {
+		cout << "Constructor with parameters called" << endl;
+	}
+	Array(const Array&);
+	Array operator=(const Array&);
+	~Array() {
+		if (arr != nullptr) {
+			delete[] arr;
+			arr = nullptr;
+			cout << "Destructor called" << endl;
+		}
+	}
+
 };
 
 
@@ -45,7 +62,26 @@ void Array::setNew_number(int index) {
 	cin >> new_number;
 	this->arr[new_index] = new_number;
 }
+Array::Array(const Array& other) {
+	size = other.size;
+	arr = new int[size];
+	for (int i = 0; i < size; ++i) {
+		arr[i] = other.arr[i];
+	}
+}
 
+Array Array::operator=(const Array& other) {
+	if (this == &other) {
+		return *this;
+	}
+	delete[] arr;
+	size = other.size;
+	arr = new int[size];
+	for (int i = 0; i < size; ++i) {
+		arr[i] = other.arr[i];
+	}
+	return *this;
+}
 
 
 

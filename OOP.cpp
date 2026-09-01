@@ -210,36 +210,6 @@ void showByYearAfter(book* books, int size, int targetYear) {
     }
 }
 
-class Library {
-private:
-    book* books{ nullptr };
-    int count{ 0 };
-
-public:
-    Library(int size) : count(size) {
-        books = new book[count];
-    }
-
-    ~Library() {
-        delete[] books;
-    }
-
-    void AddBook(const book& b, int index) {
-        if (index >= 0 && index < count) {
-            books[index] = b;
-        }
-    }
-
-    void ShowAll() const {
-        for (int i = 0; i < count; ++i) {
-            books[i].output();
-        }
-    }
-
-    book* GetBooks() const { return books; }
-    int GetCount() const { return count; }
-};
-
 
 
 int main()

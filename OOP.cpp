@@ -112,6 +112,8 @@ firstclass_MyPoint::firstclass_MyPoint(const char* name, int x, int y, Date& dat
 firstclass_MyPoint::firstclass_MyPoint(const char* name, int x, int y_):
 	name(nullptr), x(x), y(y_), myDate{ 0,0,0 } {
 	cout << "Constructor with parameters called" << endl;
+	this->name = new char[T];
+	strcpy_s(this->name, strlen(name) + 1, name);
 }
 
 firstclass_MyPoint::firstclass_MyPoint(const firstclass_MyPoint& other) {

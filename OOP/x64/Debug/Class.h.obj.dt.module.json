@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "OOP\\x64\\Debug\\Class.obj",
+            "outputs": [
+                "OOP\\x64\\Debug\\Class.h.obj.dt.module.json",
+                "OOP\\x64\\Debug\\Class.h.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "OOP\\x64\\Debug\\Menu.obj",
+            "outputs": [
+                "OOP\\x64\\Debug\\Menu.h.obj.dt.module.json",
+                "OOP\\x64\\Debug\\Menu.h.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

@@ -35,13 +35,9 @@ private:
 	int counter{ 0 };
 	int pages{ 0 };
 	int annotation{ 0 };
-
-
-
-
-
-
 public:
+
+
 
 };
 

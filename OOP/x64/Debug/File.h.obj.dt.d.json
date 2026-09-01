@@ -1,9 +1,10 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\admin\\visual studio\\oop\\oop\\oop.cpp",
+        "Source": "c:\\users\\admin\\visual studio\\oop\\oop\\file.h",
         "ProvidedModule": "",
         "Includes": [
+            "c:\\users\\admin\\visual studio\\oop\\oop\\class.h",
             "c:\\users\\admin\\visual studio\\oop\\oop\\menu.h",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\iostream",
             "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\yvals_core.h",
@@ -342,9 +343,7 @@
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\winsvc.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\mcx.h",
             "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\imm.h",
-            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\ime_cmodes.h",
-            "c:\\users\\admin\\visual studio\\oop\\oop\\file.h",
-            "c:\\users\\admin\\visual studio\\oop\\oop\\class.h"
+            "c:\\program files (x86)\\windows kits\\10\\include\\10.0.26100.0\\um\\ime_cmodes.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []

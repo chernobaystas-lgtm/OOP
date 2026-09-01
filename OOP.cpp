@@ -48,7 +48,6 @@ private:
 	Date year{ 0, 0, 0 };
 	int counter{ 0 };
 	int pages{ 0 };
-	int annotation{ 0 };
 
 
 public:
@@ -137,9 +136,109 @@ public:
     const char* getPublishing() const { return publishing; }
     int getYear() const { return year.year; }
 
+    friend istream& operator>>(istream& in, book& b);
+    friend ostream& operator<<(ostream& out, const book& b);
+
+
+
 };
 
+istream& operator>>(istream& in, book& b) {
+    cout << "Введіть автора: ";
+    in.getline(b.author, T);
 
+    cout << "Введіть назву: ";
+    in.getline(b.title, T);
+
+    cout << "Введіть видавництво: ";
+    in.getline(b.publishing, T);
+
+    cout << "Введіть рік видання:\n";
+    b.year.input();
+
+    cout << "Введіть кількість: ";
+    in >> b.counter;
+
+    cout << "Введіть кількість сторінок: ";
+    in >> b.pages;
+    in.ignore();
+
+    cout << "Введіть анотацію: ";
+    in.getline(b.annotation, T);
+
+    return in;
+}
+
+ostream& operator<<(ostream& out, const book& b) {
+    out << "\n--- Інформація про книгу ---\n";
+    out << "Автор: " << b.author << endl;
+    out << "Назва: " << b.title << endl;
+    out << "Видавництво: " << b.publishing << endl;
+    out << "Рік видання: ";
+    const_cast<Date&>(b.year).output();
+    out << endl;
+    out << "Кількість: " << b.counter << endl;
+    out << "Сторінок: " << b.pages << endl;
+    out << "Анотація: " << b.annotation << endl;
+    return out;
+}
+
+void showByAuthor(book* books, int size, const char* targetAuthor) {
+    cout << "\n--- Книги автора " << targetAuthor << " ---\n";
+    for (int i = 0; i < size; ++i) {
+        if (_stricmp(books[i].getAuthor(), targetAuthor) == 0) {
+            cout << books[i];
+        }
+    }
+}
+
+void showByPublishing(book* books, int size, const char* targetPublishing) {
+    cout << "\n--- Книги видавництва " << targetPublishing << " ---\n";
+    for (int i = 0; i < size; ++i) {
+        if (_stricmp(books[i].getPublishing(), targetPublishing) == 0) {
+            cout << books[i];
+        }
+    }
+}
+
+void showByYearAfter(book* books, int size, int targetYear) {
+    cout << "\n--- Книги, випущені після " << targetYear << " ---\n";
+    for (int i = 0; i < size; ++i) {
+        if (books[i].getYear() > targetYear) {
+            cout << books[i];
+        }
+    }
+}
+
+class Library {
+private:
+    book* books{ nullptr };
+    int count{ 0 };
+
+public:
+    Library(int size) : count(size) {
+        books = new book[count];
+    }
+
+    ~Library() {
+        delete[] books;
+    }
+
+    void AddBook(const book& b, int index) {
+        if (index >= 0 && index < count) {
+            books[index] = b;
+        }
+    }
+
+    void ShowAll() const {
+        for (int i = 0; i < count; ++i) {
+            books[i].output();
+        }
+    }
+
+    book* GetBooks() const { return books; }
+    int GetCount() const { return count; }
+};
 
 
 
@@ -149,8 +248,22 @@ int main()
     SetConsoleCP(CP_UTF8);
 
 
+    book b1("Tolstoy", "War and Peace");
+    cout << b1;
+
+	cout << "\nВведіть дані для другої книги:\n";
 
 
+    book books[3] = {
+        book("Tolstoy", "War and Peace"),
+        book("Dostoevsky", "Crime and Punishment"),
+        book("Pushkin", "Eugene Onegin")
+    };
+    int N = 3;
+
+    showByAuthor(books, N, "Tolstoy");
+    showByPublishing(books, N, "Unknown publishing");
+    showByYearAfter(books, N, 2000);
 
     return 0;
 

@@ -105,6 +105,21 @@ public:
     }
 
 
+    explicit student(const char* n, const char* s, const char* l) {
+        copy_field2(Name_of_study_place, "Don't study at any place");
+        copy_field2(name, n);
+        copy_field2(surname, s);
+        copy_field2(lastName, l);
+        copy_field2(native_city, "Without native city");
+        copy_field2(native_country, "Without native country");
+        date_of_birth = { 0, 0, 0 };
+        phone = 0;
+        number_of_the_group = 0;
+    }
+
+    friend ostream& operator<<(ostream& out, const student& s);
+    friend istream& operator>>(istream& in, student& s);
+
     // --- Деструктор ---
     ~student() {
 		if (Name_of_study_place) {
@@ -294,6 +309,55 @@ student student::operator=(const student& other) {
     return *this;
 }
 
+ostream& operator<<(ostream& out, const student& s) {
+    out << "\n--- Інформація про студента ---\n";
+    out << "Ім'я: " << (s.name ? s.name : "(порожньо)") << endl;
+    out << "Прізвище: " << (s.surname ? s.surname : "(порожньо)") << endl;
+    out << "По батькові: " << (s.lastName ? s.lastName : "(порожньо)") << endl;
+    out << "Дата народження: ";
+    s.date_of_birth.output();
+    out << "Телефон: " << s.phone << endl;
+    out << "Місто: " << (s.native_city ? s.native_city : "(порожньо)") << endl;
+    out << "Країна: " << (s.native_country ? s.native_country : "(порожньо)") << endl;
+    out << "Навчальний заклад: " << (s.Name_of_study_place ? s.Name_of_study_place : "(порожньо)") << endl;
+    out << "Номер групи: " << s.number_of_the_group << endl;
+    return out;
+}
+
+
+istream& operator>>(istream& in, student& s) {
+    cout << "Введіть ім'я: ";
+    in.getline(s.name, T);
+
+    cout << "Введіть прізвище: ";
+    in.getline(s.surname, T);
+
+    cout << "Введіть по батькові: ";
+    in.getline(s.lastName, T);
+
+    cout << "Введіть дату народження:\n";
+    s.date_of_birth.input();
+
+    cout << "Введіть номер телефону: ";
+    in >> s.phone;
+    in.ignore();
+
+    cout << "Введіть місто: ";
+    in.getline(s.native_city, T);
+
+    cout << "Введіть країну: ";
+    in.getline(s.native_country, T);
+
+    cout << "Введіть навчальний заклад: ";
+    in.getline(s.Name_of_study_place, T);
+
+    cout << "Введіть номер групи: ";
+    in >> s.number_of_the_group;
+    in.ignore();
+
+    return in;
+}
+
 
 student::student(student&& other) noexcept
     : date_of_birth(other.date_of_birth),
@@ -437,6 +501,8 @@ private:
     int count{ 0 };
 };
 
+
+
 int main()
 { 
     SetConsoleOutputCP(CP_UTF8);
@@ -446,36 +512,15 @@ int main()
 
 
 
-    dt birth{ 10, 12, 2010 };
-    student s2("KPI", "Andrey", "Popov", "Ivanovich", birth, 123456789, "Kyiv", "Ukraine", 12);
-
-    cout << "\n=== s2 (оригінал) ===\n";
-    s2.ShowInfo();
-
-    // --- Перевірка копіювання ---
-    student s3 = s2;
-    cout << "\n=== s3 (копія s2) ===\n";
-    s3.ShowInfo();
-
-    s3.Set_name("Changed");
-    cout << "\n=== s2 після зміни s3 (має лишитись Andrey) ===\n";
-    s2.ShowInfo();
-
-    // --- Перевірка move ---
-    student s4 = std::move(s2);
-    cout << "\n=== s4 (move з s2) ===\n";
-    s4.ShowInfo();
-
-    cout << "\n=== s2 після move (поля мають бути порожні/null) ===\n";
-    // тут может крашнуть если ShowInfo пытается вывести nullptr — это ожидаемо после move
-
-    // --- Перевірка move-присвоєння ---
-    student s5;
-    s5 = std::move(s3);
-    cout << "\n=== s5 (move-присвоєння з s3) ===\n";
-    s5.ShowInfo();
+    student s6("Petrov", "Ivan", "Sergeevich");
+    cout << s6;
+    s6.ShowInfo();
 
 
+	cout << "\nВведіть дані для нового студента:\n";
+    student s7;
+    cin >> s7;
+    cout << s7;
 
 
     return 0;

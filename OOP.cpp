@@ -29,14 +29,14 @@ class firstclass_MyPoint {
 
 public: 
 	firstclass_MyPoint() : name(nullptr), x(0), y(0), myDate{ 0,0,0 } {
-		cout << "Constructor called" << endl;
+		cout << "Constructor called" << this << endl;
 	}
-	firstclass_MyPoint(const char*, int, int) {
-		cout << "Constructor with parameters called" << endl;
-	}
+	firstclass_MyPoint(const char*, int, int);
 	firstclass_MyPoint(const firstclass_MyPoint&);
 	firstclass_MyPoint operator=(const firstclass_MyPoint&);
 	firstclass_MyPoint(const char*, int, int, Date&);
+
+	firstclass_MyPoint(const char*);
 	~firstclass_MyPoint() {
 		if (name != nullptr) {
 			delete[] name;
@@ -101,6 +101,18 @@ void firstclass_MyPoint::setName(const char* newName) {
 	}
 }
 
+firstclass_MyPoint::firstclass_MyPoint(const char* name, int x, int y, Date& date) : 
+	name(nullptr), x(x), y(y), myDate(date) {
+		cout << "Constructor with parameters and date called" << endl;
+}
+
+
+
+
+firstclass_MyPoint::firstclass_MyPoint(const char* name, int x, int y_):
+	name(nullptr), x(x), y(y_), myDate{ 0,0,0 } {
+	cout << "Constructor with parameters called" << endl;
+}
 
 firstclass_MyPoint::firstclass_MyPoint(const firstclass_MyPoint& other) {
 	x = other.x;
@@ -112,6 +124,11 @@ firstclass_MyPoint::firstclass_MyPoint(const firstclass_MyPoint& other) {
 		strcpy_s(name, strlen(other.name) + 1, other.name);
 
 	}
+}
+
+firstclass_MyPoint::firstclass_MyPoint(const char*name) : 
+	firstclass_MyPoint(name, 0, 0) {
+	myDate = Date{ 0,0,0 }; 
 }
 
 firstclass_MyPoint firstclass_MyPoint::operator=(const firstclass_MyPoint& other) {

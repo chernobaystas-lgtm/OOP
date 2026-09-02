@@ -164,7 +164,23 @@ string WrapOccurrences(const string& s, const string& sub) {
 	return result;
 }
 
+template<class NewT, int Size>
+NewT average( NewT* arr)
+{
+	
+	NewT sum = 0;
+	NewT middle_counter = 0;
 
+	for (int i = 0; i < size; i++)
+	{
+		sum += arr[i];
+
+	}
+
+	middle_counter = (double)sum / size;
+
+	return middle_counter;
+}
 
 
 int main()
@@ -191,9 +207,11 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-	string s1 = "abaracadabra";
-	string s2 = "ab";
-	cout << WrapOccurrences(s1, s2) << endl;
+	int arr1[] = { 7, 8, 9 };
+	cout << average<int, 3>(arr1) << endl;
+
+	double arr2[] = { 1.5, 2.5, 3.0 };
+	cout << average<double, 3>(arr2) << endl;
 
 }
 

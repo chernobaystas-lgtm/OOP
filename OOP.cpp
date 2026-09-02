@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <cstring>
+#include <string>
 #include <windows.h>
 #include <cassert>
 using namespace std;
@@ -56,6 +57,7 @@ public:
 	inline void setY(int newY);
 	inline void show()const;
 	inline void input();
+
 
 private:
 	char* name{nullptr};
@@ -145,10 +147,22 @@ firstclass_MyPoint firstclass_MyPoint::operator=(const firstclass_MyPoint& other
 		name = new char[strlen(other.name) + 1];
 		strcpy_s(name, strlen(other.name) + 1, other.name);
 
-	}
 
+	}
+	return *this;
 }
 
+string WrapOccurrences(const string& s, const string& sub) {
+	string result = s;
+	size_t pos = 0;
+
+	while ((pos = result.find(sub, pos)) != string::npos) {
+		result.insert(pos, "(");
+		result.insert(pos + 1 + sub.length(), ")");
+		pos = pos + 1 + sub.length() + 1;
+	}
+	return result;
+}
 
 
 
@@ -173,18 +187,13 @@ int main()
 
 
 
+
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-	firstclass_MyPoint point1;
-	point1.setName("MyPoint");
-	point1.setY(T);
-	if(point1.getX() == 0) {
-		point1.setX(15);
-	}
-
-	point1.show();
-
+	string s1 = "abaracadabra";
+	string s2 = "ab";
+	cout << WrapOccurrences(s1, s2) << endl;
 
 }
 

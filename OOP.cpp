@@ -9,53 +9,49 @@
 using namespace std;
 
 template <class T, int N>
-class MyQueue;
+class PriorityQueue;
 
 template <class T, int N>
 class Node {
 public:
 	T value;
+	int priority;
 	Node<T, N>* next;
 
-	Node(T value) : value(value), next(nullptr) {}
+	Node(T value, int priority) : value(value), priority(priority), next(nullptr) {}
 
-	friend ostream& operator<<(ostream& s, const Node<T, N>& n) {
-		s << n.value << endl;
-		return s;
-	}
-
-	friend class MyQueue<T, N>;
+	friend class PriorityQueue<T, N>;
 };
 
 
 template <class T, int N>
-class MyQueue {
+class PriorityQueue {
 private:
 	Node<T, N>* front{ nullptr };
-	Node<T, N>* rear{ nullptr };
 
 public:
-	MyQueue();
-	void push(const T& value);
-	void pop();
-	T& retTop() const;
-	bool empty() const;
-	int size() const;
-	bool isFull()const;
-	~MyQueue();
+	PriorityQueue();
+	~PriorityQueue();
 	void clear();
+	bool IsEmpty() const;
+	bool IsFull() const;
+	int size() const;
+	void InsertWithPriority(const T& value, int priority);
+	T PullHighestPriorityElement();
+	T Peek() const;
+	void Show() const;
 };
 
 template <class T, int N>
-MyQueue<T, N>::MyQueue() {} 
+PriorityQueue<T, N>::PriorityQueue() {} 
 
 template <class T, int N>
-MyQueue<T, N>::~MyQueue() {
+PriorityQueue<T, N>::~PriorityQueue() {
 	clear();
 }
 
 template <class T, int N>
-void MyQueue<T, N>::clear() {
+void PriorityQueue<T, N>::clear() {
 	Node<T, N>* temp;
 	while (front != nullptr) {
 		temp = front;
@@ -63,51 +59,73 @@ void MyQueue<T, N>::clear() {
 		delete temp;
 	}
 	front = nullptr;
-	rear = nullptr;
 }
 
 template <class T, int N>
-void MyQueue<T, N>::push(const T& value) {
-	Node<T, N>* temp = new Node<T, N>(value);
-	if (rear == nullptr) {
+void PriorityQueue<T, N>::InsertWithPriority(const T& value, int priority) {
+	Node<T, N>* temp = new Node<T, N>(value, priority);
+
+	if (front == nullptr) {
 		front = temp;
+		return;
 	}
-	else {
-		rear->next = temp;
+	if (priority > front->priority) {
+		temp->next = front;
+		front = temp;
+		return;
 	}
-	rear = temp;
+	Node<T, N>* current = front->next;
+	Node<T, N>* previous = front;
+	while (current != nullptr && current->priority >= priority) {
+		previous = current;
+		current = current->next;
+	}
+	temp->next = current;
+	previous->next = temp;
 }
 
 template <class T, int N>
-void MyQueue<T, N>::pop() {
-	if (front != nullptr) {
-		Node<T, N>* temp = front;
-		front = front->next;
-		delete temp;
-		if (front == nullptr) {
-			rear = nullptr;
-		}
-	}
-}			
+T PriorityQueue<T, N>::PullHighestPriorityElement() {
+	assert(front != nullptr && "Queue is empty");
+	T value = front->value;      // копия, не ссылка
+	Node<T, N>* temp = front;
+	front = front->next;
+	delete temp;
+	return value;
+}
 
 template <class T, int N>
-T& MyQueue<T, N>::retTop() const {
+T PriorityQueue<T, N>::Peek() const {
 	assert(front != nullptr && "Queue is empty");
 	return front->value;
 }
 
+
 template <class T, int N>
-bool MyQueue<T, N>::empty() const {
+void PriorityQueue<T, N>::Show() const {
+	if (front == nullptr) {
+		cout << "Queue is empty" << endl;
+		return;
+	}
+	Node<T, N>* current = front;
+	while (current != nullptr) {
+		cout << "Value: " << current->value << ", Priority: " << current->priority << endl;
+		current = current->next;
+	}
+}
+
+template <class T, int N>
+bool PriorityQueue<T, N>::IsEmpty() const {
 	return (front == nullptr) ? true : false;
 }
 
 template <class T, int N>
-bool MyQueue<T, N>::isFull() const {
+bool PriorityQueue<T, N>::IsFull() const {
 	return (size() == N) ? true : false;
 }
 
 template <class T, int N>
-int MyQueue<T, N>::size() const {
+int PriorityQueue<T, N>::size() const {
 	int count = 0;
 	Node<T, N>* current = front;
 	while (current != nullptr) {
@@ -117,34 +135,38 @@ int MyQueue<T, N>::size() const {
 	return count;
 }
 
+
+
+
 int main()
 {
-	MyQueue<int, 5> q;
+	PriorityQueue<string, 5> pq;
 
-	cout << "Empty? " << q.empty() << endl;      // 1 (true) - пустая
-	cout << "Full? " << q.isFull() << endl;       // 0 (false)
-	cout << "Size: " << q.size() << endl;         // 0
+	cout << "Empty? " << pq.IsEmpty() << endl;   // 1 (true)
 
-	cout << "\n--- Push 5 elements ---\n";
-	for (int i = 1; i <= 5; i++) {
-		q.push(i * 10);
-		cout << "Pushed " << i * 10 << ", size: " << q.size() << endl;
+	cout << "\n--- Insert elements with different priorities ---\n";
+	pq.InsertWithPriority("Task A", 3);
+	pq.InsertWithPriority("Task B", 5);
+	pq.InsertWithPriority("Task C", 1);
+	pq.InsertWithPriority("Task D", 4);
+	pq.InsertWithPriority("Task E", 2);
+
+	cout << "Full? " << pq.IsFull() << endl;      // 1, N=5
+	cout << "Size: " << pq.size() << endl;
+
+	cout << "\n--- Show (must be sorted by priority, high to low) ---\n";
+	pq.Show();
+
+	cout << "\n--- Peek (must not remove) ---\n";
+	cout << "Peek: " << pq.Peek() << endl;
+	cout << "Size after peek: " << pq.size() << endl;   // размер не изменился
+
+	cout << "\n--- Pull all elements one by one ---\n";
+	while (!pq.IsEmpty()) {
+		cout << "Pulled: " << pq.PullHighestPriorityElement() << endl;
 	}
 
-	cout << "\nEmpty? " << q.empty() << endl;     // 0
-	cout << "Full? " << q.isFull() << endl;        // 1 - заполнили N=5
-
-	cout << "\n--- Try push into full queue ---\n";
-	q.push(999);   // тут посмотришь, что реально произойдёт - улетит без проверки или нет
-
-	cout << "\n--- Pop all elements ---\n";
-	while (!q.empty()) {
-		cout << "Front: " << q.retTop() << ", size before pop: " << q.size() << endl;
-		q.pop();
-	}
-
-	cout << "\nEmpty after popping all? " << q.empty() << endl;  // 1
-	cout << "Size: " << q.size() << endl;                        // 0
+	cout << "\nEmpty after pulling all? " << pq.IsEmpty() << endl;  // 1
 
 	system("pause");
 }

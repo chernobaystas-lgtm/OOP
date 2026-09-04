@@ -47,12 +47,23 @@ public:
 	bool empty() const;        // if stack is empty
 	int size() const;          // stack size
 	~MyStack();
-	friend ostream& operator<<(ostream& s, const Stack<T>& stck) {
-		return s;
-	}
+	void clear();
 };
 template <class T>
 MyStack<T>::~MyStack<T>() {
+
+	/*Node<T>* temp;
+	while (top != nullptr) {
+		temp = top;
+		top = top->next;
+		delete temp;
+	}
+	top = nullptr;*/
+	clear();
+
+}
+template <class T>
+void MyStack<T>::clear() {
 
 	Node<T>* temp;
 	while (top != nullptr) {
@@ -63,8 +74,6 @@ MyStack<T>::~MyStack<T>() {
 	top = nullptr;
 
 }
-
-
 
 
 

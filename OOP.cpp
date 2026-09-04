@@ -47,25 +47,51 @@ public:
 	bool empty() const;        // if stack is empty
 	int size() const;          // stack size
 	~MyStack();
+	friend ostream& operator<<(ostream& s, const Stack<T>& stck) {
+		return s;
+	}
 };
 template <class T>
-MyStack<T>::~MyStack<T>() {}
+MyStack<T>::~MyStack<T>() {
+
+	Node<T>* temp;
+	while (top != nullptr) {
+		temp = top;
+		top = top->next;
+		delete temp;
+	}
+	top = nullptr;
+
+}
 
 
 
 
 
 template <class T>
-void MyStack<T>::push(const T& value) {}
+void MyStack<T>::push(const T& value) {
+	Node<T>* temp = new Node<T>{value};
+	temp->next = top;
+	top = temp;
+}
 
 template <class T>
-void MyStack<T>::pop() {}
+void MyStack<T>::pop() {
+	if (!empty()) {
+		Node<T>* temp = top;
+		top = top->next;
+		delete temp;
 
+	}
+	else {
+		cout << "Stack is empty" << endl;
+	}
+}
 
 
 template <class T>
 T& MyStack<T>::retTop() const {
-	assert(top != nullptr);
+	assert(top != nullptr && "Stack is empty");
 	return top->value;
 }
 
@@ -75,9 +101,15 @@ bool MyStack<T>::empty() const {
 }
 
 template <class T>
-int MyStack<T>::size() const {}
-
-
+int MyStack<T>::size() const {
+	int count = 0;
+	Node<T>* current = top;
+	while (current != nullptr) {
+		count++;
+		current = current->next;
+	}
+	return count;
+}
 
 int main()
 { 

@@ -9,7 +9,7 @@
 using namespace std;
 
 template <class T, int N>
-class MyStack;
+class MyQueue;
 
 template <class T, int N>
 class Node {
@@ -24,86 +24,92 @@ public:
 		return s;
 	}
 
-	friend class MyStack<T, N>;
+	friend class MyQueue<T, N>;
 };
 
 
 template <class T, int N>
-class MyStack {
+class MyQueue {
 private:
-	Node<T, N>* top{ nullptr }; 
+	Node<T, N>* front{ nullptr };
+	Node<T, N>* rear{ nullptr };
 
 public:
-	MyStack();
+	MyQueue();
 	void push(const T& value);
 	void pop();
 	T& retTop() const;
 	bool empty() const;
 	int size() const;
 	bool isFull()const;
-	~MyStack();
+	~MyQueue();
 	void clear();
 };
 
 template <class T, int N>
-MyStack<T, N>::MyStack() {} 
+MyQueue<T, N>::MyQueue() {} 
 
 template <class T, int N>
-MyStack<T, N>::~MyStack() {
+MyQueue<T, N>::~MyQueue() {
 	clear();
 }
 
 template <class T, int N>
-void MyStack<T, N>::clear() {
+void MyQueue<T, N>::clear() {
 	Node<T, N>* temp;
-	while (top != nullptr) {
-		temp = top;
-		top = top->next;
+	while (front != nullptr) {
+		temp = front;
+		front = front->next;
 		delete temp;
 	}
-	top = nullptr;
+	front = nullptr;
+	rear = nullptr;
 }
 
 template <class T, int N>
-void MyStack<T, N>::push(const T& value) {
-	assert(!isFull() && "Stack is full");
+void MyQueue<T, N>::push(const T& value) {
 	Node<T, N>* temp = new Node<T, N>(value);
-	temp->next = top;
-	top = temp;
-}
-
-template <class T, int N>
-void MyStack<T, N>::pop() {
-	if (!empty()) {
-		Node<T, N>* temp = top;
-		top = top->next;
-		delete temp;
+	if (rear == nullptr) {
+		front = temp;
 	}
 	else {
-		cout << "Stack is empty" << endl;
+		rear->next = temp;
 	}
+	rear = temp;
 }
 
 template <class T, int N>
-T& MyStack<T, N>::retTop() const {
-	assert(top != nullptr && "Stack is empty");
-	return top->value;
+void MyQueue<T, N>::pop() {
+	if (front != nullptr) {
+		Node<T, N>* temp = front;
+		front = front->next;
+		delete temp;
+		if (front == nullptr) {
+			rear = nullptr;
+		}
+	}
+}			
+
+template <class T, int N>
+T& MyQueue<T, N>::retTop() const {
+	assert(front != nullptr && "Queue is empty");
+	return front->value;
 }
 
 template <class T, int N>
-bool MyStack<T, N>::empty() const {
-	return (top == nullptr) ? true : false;
+bool MyQueue<T, N>::empty() const {
+	return (front == nullptr) ? true : false;
 }
 
 template <class T, int N>
-bool MyStack<T, N>::isFull() const {
+bool MyQueue<T, N>::isFull() const {
 	return (size() == N) ? true : false;
 }
 
 template <class T, int N>
-int MyStack<T, N>::size() const {
+int MyQueue<T, N>::size() const {
 	int count = 0;
-	Node<T, N>* current = top;
+	Node<T, N>* current = front;
 	while (current != nullptr) {
 		count++;
 		current = current->next;
@@ -113,17 +119,32 @@ int MyStack<T, N>::size() const {
 
 int main()
 {
-	char str[100]{ "lorem hi to u" };
-	cout << "String: " << str << endl;
-	MyStack<char, 100> myCharstack;
-	for (auto ch : str) {
-		myCharstack.push(ch);
+	MyQueue<int, 5> q;
+
+	cout << "Empty? " << q.empty() << endl;      // 1 (true) - пустая
+	cout << "Full? " << q.isFull() << endl;       // 0 (false)
+	cout << "Size: " << q.size() << endl;         // 0
+
+	cout << "\n--- Push 5 elements ---\n";
+	for (int i = 1; i <= 5; i++) {
+		q.push(i * 10);
+		cout << "Pushed " << i * 10 << ", size: " << q.size() << endl;
 	}
 
-	cout << "Stack pop: ";
-	while (!myCharstack.empty()) {
-		cout << myCharstack.retTop() << " ";
-		myCharstack.pop();
+	cout << "\nEmpty? " << q.empty() << endl;     // 0
+	cout << "Full? " << q.isFull() << endl;        // 1 - заполнили N=5
+
+	cout << "\n--- Try push into full queue ---\n";
+	q.push(999);   // тут посмотришь, что реально произойдёт - улетит без проверки или нет
+
+	cout << "\n--- Pop all elements ---\n";
+	while (!q.empty()) {
+		cout << "Front: " << q.retTop() << ", size before pop: " << q.size() << endl;
+		q.pop();
 	}
+
+	cout << "\nEmpty after popping all? " << q.empty() << endl;  // 1
+	cout << "Size: " << q.size() << endl;                        // 0
+
 	system("pause");
 }
